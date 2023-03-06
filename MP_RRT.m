@@ -56,24 +56,20 @@ Tree = tree(q_goal, time);
 Forest = [];
 p_goal = 0.01;
 p_forest = 0.1;
-for i=1:1:time
+iter = 1;
+while iter<time
     %Select node randomly.
     new_node = SelectSample(Forest, p_goal, p_forest, world_x, world_y, q_init)
-
-    distance = 100000000;
-    %Find nearest neighbour.
-    for k=1:1:length(Tree.tree_mat)
-        new_distance = norm(new_node - [Tree.tree_mat(k).Value_x, Tree.tree_mat(k).Value_y] );
-        if new_distance<distance
-            distance = new_distance;
-            nearest_node = [Tree.tree_mat(k).Value_x, Tree.tree_mat(k).Value_y];
-            nearest_node_id = Tree.tree_mat(k).ID;
-        end
-    end
+    
+    %Find nearest neigbour.
+    nearest_node_id = NearestNeighbour(Tree, new_node);
 
     new_node_level = Tree.tree_mat(k).Level + 1;
     %Add node.
-    Tree = add_node(Tree, new_node, new_node_level, nearest_node_id, static_obs_pos, dynamic_obs_pos, obs_rad);
+    [success, Tree] = add_node(Tree, new_node, new_node_level, nearest_node_id, static_obs_pos, dynamic_obs_pos, obs_rad);
+    if success == true
+        iter = iter + 1;
+    end
 end
 
 %Create animation
@@ -100,6 +96,29 @@ for animation_time = 1:time
     
     %Store each image into a struct.
     frames(animation_time) = getframe; 
+end
+
+%Function MPRRTSearch.
+function success = MPRRTSearch()
+
+end
+
+function nearest_node_id = NearestNeighbour(Tree, new_node)
+    distance = 100000000;
+    %Find nearest neighbour.
+    for k=1:1:length(Tree.tree_mat)
+        new_distance = norm(new_node - [Tree.tree_mat(k).Value_x, Tree.tree_mat(k).Value_y] );
+        if new_distance<distance
+            distance = new_distance;
+            nearest_node = [Tree.tree_mat(k).Value_x, Tree.tree_mat(k).Value_y];
+            nearest_node_id = Tree.tree_mat(k).ID;
+        end
+    end
+end
+
+%Function Prune and Prepend.
+function [Tree, forest] = PruneandPrepend()
+
 end
 
 %Function SelectSample
