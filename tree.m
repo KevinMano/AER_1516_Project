@@ -78,18 +78,18 @@ classdef tree
             end
 
             %Check against dynamic obstacles.
-            %for i=1:1:length(dynamic_obstacles)
+            for i=1:1:length(dynamic_obstacles)
                 %Form quadratic equation of the line between node and its parent and the obstacle
                 %circle.
-            %    m = (coords(1,2) - obj.tree_mat(parent_id).Value(1,2))/(coords(1,1)- obj.tree_mat(parent_id).Value(1,1));
-            %    c = coords(1,2) - m*coords(1,1);
+                m = (coords(1,2) - obj.tree_mat(parent_id).Value_y)/(coords(1,1)- obj.tree_mat(parent_id).Value_x);
+                c = coords(1,2) - m*coords(1,1);
                 %Check the perpendicular distance of line to circle.
-            %    perp_distance = (dynamic_obstacles(i).x(end,1)*m + dynamic_obstacles(i).y(end,1)*(-1) + c)/(sqrt(m^2 + 1));
-            %    if perp_distance < rad
-            %        success = false;
-            %        return
-            %    end
-            %end
+                perp_distance = (dynamic_obstacles(i).x(end,1)*m + dynamic_obstacles(i).y(end,1)*(-1) + c)/(sqrt(m^2 + 1));
+                if perp_distance < rad
+                    success = false;
+                    return
+                end
+            end
             success = true;
         end
     end
