@@ -24,7 +24,7 @@ classdef tree
            obj.nodes = 1;
 
            %Array of structs.
-           obj.tree_mat = repmat(obj.root, obj.root.ID, 1);%table('Size', [3,size], 'VariableTypes', ["integer", "integer", "struct"], 'VariableNames', "ID, Level, "); 
+           obj.tree_mat = repmat(obj.root, obj.root.ID, 1);
        end
 
         %Add a node to the tree.
@@ -60,9 +60,17 @@ classdef tree
             obj.tree_mat(node_id) = [];
 
             %Update number of nodes.
-            Node_ID = obj.nodes - 1;
-            obj.nodes = Node_ID;
+            Num_nodes = obj.nodes - 1;
+            obj.nodes = Num_nodes;
+
+            %Update parents of nodes.
+
         end
+
+        %Delete edge if no longer valid.
+        %function obj = delete_edge(obj, )
+            
+        %end
 
         %If no collision present, draw edge. 
         function success = collision_check(obj, parent_id, coords, static_obstacles, dynamic_obstacles, rad)
